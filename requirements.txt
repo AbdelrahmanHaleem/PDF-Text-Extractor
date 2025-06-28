@@ -1,0 +1,7 @@
+PyPDF2==3.0.1
+Flask==2.3.3
+Werkzeug==2.3.7
+python-docx==0.8.11
+openpyxl==3.1.2
+python-pptx==0.6.21
+Pillow==10.0.1 
