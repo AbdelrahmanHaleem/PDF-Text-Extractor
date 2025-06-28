@@ -1,20 +1,22 @@
-# Multi-Format Text Extractor
+# Multi-Format Text Extractor - Batch Processing
 
-A powerful text extraction tool that supports multiple file formats with both command-line and web interface options.
+A powerful text extraction tool that supports multiple file formats with both command-line and web interface options, including advanced batch processing capabilities.
 
 ## Features
 
 - **Multi-Format Support**: Extract text from PDF, Word, PowerPoint, and Excel files
+- **Batch Processing**: Process multiple files simultaneously
 - **Web Interface**: Beautiful, modern web UI for easy file upload and text extraction
 - **Command Line**: Simple command-line tool for batch processing
 - Extract text from all pages/slides/sheets of documents
-- Save extracted text to a text file
+- Save extracted text to individual files or ZIP archives
 - Preview of extracted text
 - Error handling for common issues
 - Progress tracking during extraction
 - Drag and drop file upload
-- Download extracted text files
+- Download extracted text files individually or as batch
 - Format-specific metadata and statistics
+- Detailed batch processing reports
 
 ## Supported File Formats
 
@@ -46,24 +48,18 @@ python app.py
 
 2. Open your browser and go to: `http://localhost:5000`
 
-3. Upload your file by:
-   - Dragging and dropping the file onto the upload area
-   - Clicking the upload area to browse for files
+3. Upload multiple files by:
+   - Dragging and dropping multiple files onto the upload area
+   - Clicking the upload area to browse and select multiple files
+   - Files are displayed in a list with options to remove individual files
 
-4. Click "Extract Text" to process your file
+4. Click "Extract Text from All Files" to process all files
 
-5. View the extracted text and download the text file
+5. View batch results with individual file statistics and download options
 
 ### Command Line Interface
 
-#### Method 1: Run with default file
-The script will automatically use available files in the current directory:
-
-```bash
-python pdf_extractor.py
-```
-
-#### Method 2: Specify a file
+#### Single File Processing
 ```bash
 python pdf_extractor.py "path/to/your/file.pdf"
 python pdf_extractor.py "path/to/your/document.docx"
@@ -71,17 +67,51 @@ python pdf_extractor.py "path/to/your/presentation.pptx"
 python pdf_extractor.py "path/to/your/spreadsheet.xlsx"
 ```
 
+#### Batch Processing - Multiple Files
+```bash
+python batch_extractor.py file1.pdf file2.docx file3.pptx file4.xlsx
+```
+
+#### Batch Processing - Directory
+```bash
+python batch_extractor.py ./documents
+```
+
+#### Batch Processing - Specific File Types
+```bash
+python batch_extractor.py ./documents --patterns "*.pdf" "*.docx"
+```
+
 ## Web Interface Features
 
 - **Modern UI**: Beautiful gradient design with smooth animations
 - **Multi-Format Support**: Handle PDF, Word, PowerPoint, and Excel files
-- **Drag & Drop**: Simply drag your file onto the upload area
+- **Batch Upload**: Select and process multiple files at once
+- **Drag & Drop**: Simply drag multiple files onto the upload area
+- **File Management**: View selected files, remove individual files, clear all
 - **Real-time Progress**: See the extraction progress in real-time
+- **Batch Summary**: Overview of successful and failed files
+- **Individual Results**: Detailed view of each processed file
 - **Format-Specific Statistics**: View relevant metadata for each file type
-- **Text Preview**: Preview the first 1000 characters of extracted text
-- **Download**: Download the complete extracted text as a .txt file
-- **Copy to Clipboard**: Copy the extracted text directly to your clipboard
-- **Multiple Files**: Process multiple files without refreshing the page
+- **Text Preview**: Preview the first 300 characters of extracted text
+- **Download Options**: Download individual files or all as ZIP archive
+- **Error Handling**: Clear indication of failed files with error messages
+
+## Command Line Features
+
+### Single File Processing (`pdf_extractor.py`)
+- Process one file at a time
+- Display format-specific metadata
+- Save extracted text to individual files
+- Preview of extracted text in terminal
+
+### Batch Processing (`batch_extractor.py`)
+- Process multiple files or entire directories
+- Detailed progress reporting
+- Comprehensive summary statistics
+- JSON report generation
+- Error handling for individual files
+- Format breakdown statistics
 
 ## Format-Specific Features
 
@@ -111,45 +141,57 @@ python pdf_extractor.py "path/to/your/spreadsheet.xlsx"
 ## Output
 
 ### Web Interface
-- Extracted text displayed in a preview area
-- Format-specific statistics (pages, slides, sheets, etc.)
-- Downloadable text file
-- Copy to clipboard functionality
+- **Batch Summary**: Total files, successful, failed
+- **Individual Results**: Each file with its own statistics and preview
+- **Download Options**: Individual files or ZIP archive
+- **Error Reporting**: Clear indication of failed files
 
 ### Command Line
-- Extracted text saved to `{original_filename}_extracted_text.txt`
-- Format-specific metadata display
-- Preview of first 500 characters in terminal
-- Total character and word count displayed
+- **Single File**: Extracted text saved to `{original_filename}_extracted_text.txt`
+- **Batch Processing**: Multiple files with detailed report
+- **JSON Report**: Comprehensive batch processing report
+- **Format-specific metadata display**
+- **Preview of first 500 characters in terminal**
+- **Total character and word count displayed**
 
 ## Example Output
 
-### Web Interface
-The web interface provides format-specific information:
-- **PDF**: Pages, characters, words
-- **Word**: Paragraphs, tables, characters, words
-- **PowerPoint**: Slides, characters, words
-- **Excel**: Sheets, characters, words
-
-### Command Line
+### Web Interface Batch Results
 ```
-==================================================
-FILE METADATA:
-==================================================
-File Type: Word Document
-Characters: 15,420
-Words: 2,584
-Paragraphs: 45
-Tables: 3
-==================================================
+Batch Processing Complete
+┌─────────────┬─────────────┬─────────────┐
+│ Total Files │ Successful  │   Failed    │
+│     5       │     4       │     1       │
+└─────────────┴─────────────┴─────────────┘
 
-TEXT PREVIEW (first 500 characters):
-==================================================
-[Extracted text preview here...]
-==================================================
+Individual File Results:
+├─ document1.pdf (PDF, 3 pages, 1,250 chars)
+├─ document2.docx (Word, 2 paragraphs, 890 chars)
+├─ presentation.pptx (PowerPoint, 5 slides, 2,100 chars)
+├─ spreadsheet.xlsx (Excel, 2 sheets, 3,450 chars)
+└─ failed_file.txt (Failed: Unsupported format)
+```
 
-Total characters extracted: 15,420
-Total words extracted: 2,584
+### Command Line Batch Processing
+```
+============================================================
+BATCH PROCESSING SUMMARY
+============================================================
+
+✅ Successfully processed: 4 files
+   Total characters extracted: 7,690
+   Total words extracted: 1,284
+
+   Format breakdown:
+     PDF: 1 files
+     Word Document: 1 files
+     PowerPoint Presentation: 1 files
+     Excel Spreadsheet: 1 files
+
+❌ Failed to process: 1 files
+   failed_file.txt: Unsupported file format
+
+📊 Detailed report saved: batch_extraction_report_20250628_143022.json
 ```
 
 ## Error Handling
@@ -159,14 +201,16 @@ Both interfaces handle common errors:
 - Unsupported file formats
 - Corrupted files
 - Network errors (web interface)
+- Individual file failures in batch processing
 - General exceptions
 
 ## File Management
 
 - Uploaded files are automatically cleaned up after processing
-- Extracted text files can be downloaded
+- Extracted text files can be downloaded individually or as batch
 - Temporary files are managed automatically
-- Maximum file size: 32MB
+- Maximum file size: 64MB (increased for batch processing)
+- ZIP archive creation for batch downloads
 
 ## Requirements
 
@@ -174,17 +218,17 @@ Both interfaces handle common errors:
 - PyPDF2 3.0.1
 - Flask 2.3.3
 - Werkzeug 2.3.7
-- python-docx 0.8.11
-- openpyxl 3.1.2
-- python-pptx 0.6.21
-- Pillow 10.0.1
+- python-docx >=1.1.2
+- openpyxl >=3.1.5
+- python-pptx >=1.0.2
 
 ## Security Features
 
 - File type validation (supported formats only)
 - Secure filename handling
-- Maximum file size limits (32MB)
+- Maximum file size limits (64MB)
 - Automatic file cleanup
+- Batch processing safety checks
 
 ## Browser Compatibility
 
@@ -198,13 +242,32 @@ The web interface works with all modern browsers:
 
 ```
 Multi-Format Text Extractor/
-├── app.py                 # Flask web application
-├── pdf_extractor.py       # Command-line version
+├── app.py                 # Flask web application with batch support
+├── pdf_extractor.py       # Single file command-line version
+├── batch_extractor.py     # Batch processing command-line version
 ├── text_extractor.py      # Core text extraction module
 ├── requirements.txt       # Python dependencies
 ├── README.md             # Documentation
 ├── templates/
-│   └── index.html        # Beautiful web interface
+│   └── index.html        # Beautiful web interface with batch support
 ├── static/               # For any additional assets
 └── uploads/              # Temporary file storage (auto-created)
 ```
+
+## Advanced Usage
+
+### Batch Processing with Custom Patterns
+```bash
+# Process only PDF files
+python batch_extractor.py ./documents --patterns "*.pdf"
+
+# Process specific file types
+python batch_extractor.py ./documents --patterns "*.docx" "*.pptx"
+```
+
+### Web Interface Batch Features
+- **Selective Download**: Download individual files or entire batch as ZIP
+- **File Preview**: See file list before processing
+- **Remove Files**: Remove individual files from batch before processing
+- **Clear All**: Reset and start with new files
+- **Progress Tracking**: Real-time progress for batch processing
